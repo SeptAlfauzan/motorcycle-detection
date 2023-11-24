@@ -137,20 +137,21 @@ def vis(dets, srcimg, letterbox_scale, fps=None):
 
         x0, y0, x1, y1 = box
 
-        text = "{}:{:.1f}%".format(classes[cls_id], score * 100)
-        font = cv.FONT_HERSHEY_SIMPLEX
-        txt_size = cv.getTextSize(text, font, 0.4, 1)[0]
-        cv.rectangle(res_img, (x0, y0), (x1, y1), (0, 255, 0), 2)
-        cv.rectangle(
-            res_img,
-            (x0, y0 + 1),
-            (x0 + txt_size[0] + 1, y0 + int(1.5 * txt_size[1])),
-            (255, 255, 255),
-            -1,
-        )
-        cv.putText(
-            res_img, text, (x0, y0 + txt_size[1]), font, 0.4, (0, 0, 0), thickness=1
-        )
+        if classes[cls_id] == "motorcycle":
+            text = "{}:{:.1f}%".format(classes[cls_id], score * 100)
+            font = cv.FONT_HERSHEY_SIMPLEX
+            txt_size = cv.getTextSize(text, font, 0.4, 1)[0]
+            cv.rectangle(res_img, (x0, y0), (x1, y1), (0, 255, 0), 2)
+            cv.rectangle(
+                res_img,
+                (x0, y0 + 1),
+                (x0 + txt_size[0] + 1, y0 + int(1.5 * txt_size[1])),
+                (255, 255, 255),
+                -1,
+            )
+            cv.putText(
+                res_img, text, (x0, y0 + txt_size[1]), font, 0.4, (0, 0, 0), thickness=1
+            )
 
     return res_img
 

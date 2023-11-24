@@ -2,7 +2,7 @@
 
 |                              Yolox                              |                              YoloV8                              |
 | :-------------------------------------------------------------: | :--------------------------------------------------------------: |
-| ![Yolox output](./outputs/Screenshot%202023-11-24%20225942.png) | ![YoloV8 output](./outputs/Screenshot%202023-11-24%20230125.png) |
+| ![Yolox output](./outputs/Screenshot%202023-11-24%20230726.png) | ![YoloV8 output](./outputs/Screenshot%202023-11-24%20230125.png) |
 
 This program is used to count how many motorbike in current frame by detect the motorbike object
 
@@ -30,4 +30,5 @@ How to run
 5. For Yolox version, to detect object from image file run this command
    ```
    python .\yolox_example\main.py --input <image file dir> -v
+   ``
    ```
