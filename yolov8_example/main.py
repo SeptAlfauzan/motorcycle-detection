@@ -1,43 +1,68 @@
 from ultralytics import YOLO
 import cv2
 import base64
-from ultralytics.utils.plotting import (
-    Annotator,
-)
+from ultralytics.utils.plotting import Annotator
 
+# Inisialisasi model YOLO
 model = YOLO("yolov8n.pt")
-img = cv2.imread("./vehicles.jpg")
 
-results = model.predict(source=img)
-# images = results
-print(results)
+video_path = "tes.mp4"
+cap = cv2.VideoCapture(video_path)
 
-for r in results:
-    annotator = Annotator(img)
-    boxes = r.boxes
-    for box in boxes:
-        b = box.xyxy[0]  # get box coordinates in (top, left, bottom, right) format
-        c = box.cls
+while True:
+    # Baca frame dari video
+    ret, frame = cap.read()
 
-        print(model.names[int(c)])
+    # Hentikan program jika video sudah habis
+    if not ret:
+        break
 
-        if model.names[int(c)] == "motorcycle":
-            label = "{}: {}".format(model.names[int(c)], format(box.conf[0], ".2f"))
-            annotator.box_label(
-                b,
-                label,
-                color=(255, 0, 255),
-            )
+    # Prediksi dengan model YOLO
+    results = model.predict(source=frame)
 
-img = annotator.result()
-# convert to base64
-string = base64.b64encode(cv2.imencode(".jpg", img)[1]).decode()
-print(string)
-# write base64 string image to file.txt
-text_file = open("base64.txt", "w")
-text_file.write("base64: %s" % string)
-text_file.close()
+    # Inisialisasi variabel untuk menghitung jumlah sepeda motor
+    motorcycle_count = 0
 
-cv2.imshow("Result", img)
-cv2.waitKey(0)
+    for r in results:
+        annotator = Annotator(frame)
+
+        boxes = r.boxes
+        for box in boxes:
+            b = box.xyxy[0]  # dapatkan koordinat kotak dalam format (top, left, bottom, right)
+            c = box.cls
+
+            print(model.names[int(c)])
+
+            if model.names[int(c)] == "motorcycle":
+                # Tambahkan jumlah sepeda motor
+                motorcycle_count += 1
+
+                label = "{}: {}".format(model.names[int(c)], format(box.conf[0], ".2f"))
+                annotator.box_label(
+                    b,
+                    label,
+                    color=(255, 0, 255),
+                )
+
+        frame = annotator.result()
+
+    cv2.putText(
+        frame,
+        f"Jumlah Sepeda Motor: {motorcycle_count}",
+        (10, 30),  # Koordinat teks di dalam gambar (x, y)
+        cv2.FONT_HERSHEY_SIMPLEX,
+        1,  # Skala teks
+        (255, 0, 255),  # Warna teks (dalam format BGR)
+        2,  # Ketebalan teks
+        cv2.LINE_AA,
+    )
+
+    # Tampilkan frame hasil
+    cv2.imshow("Hasil", frame)
+
+    # Keluar dari loop jika tombol 'q' ditekan
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
 cv2.destroyAllWindows()
