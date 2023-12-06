@@ -75,7 +75,7 @@ def vis(dets, srcimg, letterbox_scale, fps=None):
     # Display motorcycle count on the frame
     cv.putText(
         res_img,
-        f"Motorcycles: {motorcycle_count}",
+        f"Jumlah Sepeda Motor: {motorcycle_count}",
         (10, 60),
         cv.FONT_HERSHEY_SIMPLEX,
         1,
