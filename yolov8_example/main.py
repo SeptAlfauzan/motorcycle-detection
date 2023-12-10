@@ -7,7 +7,7 @@ from ultralytics.utils.plotting import Annotator
 # Inisialisasi model YOLO
 model = YOLO("yolov8n.pt")
 
-video_path = "tes.mp4"
+video_path = "./videos/4.mp4"
 cap = cv2.VideoCapture(video_path)
 pre_timeframe = 0
 new_timeframe = 0
@@ -77,6 +77,8 @@ while True:
         2,  # Ketebalan teks
         cv2.LINE_AA,
     )
+
+    frame = cv2.resize(frame, (960, 540))
 
     # Tampilkan frame hasil
     cv2.imshow("Hasil", frame)
