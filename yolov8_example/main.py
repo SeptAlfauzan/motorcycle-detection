@@ -26,6 +26,7 @@ parser.add_argument(
 parser.add_argument(
     "--tracking",
     "-t",
+    default=False,
     type=bool,
     help="Value to display total count tracking of motorcycle",
 )
@@ -138,8 +139,8 @@ while True:
         fontFace=cv2.FONT_HERSHEY_SIMPLEX,
         fontScale=1,
     )
-
-    if args.tracking is None:
+    print(args.tracking)
+    if args.tracking is False:
         cv2.putText(
             frame,
             f"Jumlah Sepeda Motor: {motorcycle_count}",
